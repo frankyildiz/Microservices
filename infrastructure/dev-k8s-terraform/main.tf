@@ -137,7 +137,7 @@ resource "aws_instance" "kube-master" {
     instance_type = "t3a.medium"
     iam_instance_profile = module.iam.master_profile_name
     vpc_security_group_ids = [aws_security_group.matt-kube-master-sg.id, aws_security_group.matt-kube-mutual-sg.id]
-    key_name = "fatih-steve"
+    key_name = "call-ansible-test-dev.key"
     subnet_id = "subnet-08c3f24b8d7075a5f"  # select own subnet_id of us-east-1b
     availability_zone = "us-east-1b"
     tags = {
@@ -155,7 +155,7 @@ resource "aws_instance" "worker-1" {
     instance_type = "t3a.medium"
         iam_instance_profile = module.iam.worker_profile_name
     vpc_security_group_ids = [aws_security_group.matt-kube-worker-sg.id, aws_security_group.matt-kube-mutual-sg.id]
-    key_name = "fatih-steve"
+    key_name = "call-ansible-test-dev.key"
     subnet_id = "subnet-08c3f24b8d7075a5f"  # select own subnet_id of us-east-1b
     availability_zone = "us-east-1b"
     tags = {
@@ -173,7 +173,7 @@ resource "aws_instance" "worker-2" {
     instance_type = "t3a.medium"
     iam_instance_profile = module.iam.worker_profile_name
     vpc_security_group_ids = [aws_security_group.matt-kube-worker-sg.id, aws_security_group.matt-kube-mutual-sg.id]
-    key_name = "fatih-steve"
+    key_name = "call-ansible-test-dev.key"
     subnet_id = "subnet-08c3f24b8d7075a5f"  # select own subnet_id of us-east-1b
     availability_zone = "us-east-1b"
     tags = {
