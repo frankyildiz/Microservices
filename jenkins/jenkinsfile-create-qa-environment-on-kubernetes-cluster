@@ -26,6 +26,14 @@ pipeline {
             }
         }
 
+        stage('Create Key Pair for Ansible') {
+            steps {
+                echo "Creating Key Pair for ${APP_NAME} App"
+                sh "aws ec2 create-key-pair --region ${AWS_REGION} --key-name ${ANS_KEYPAIR} --query KeyMaterial --output text > ${ANS_KEYPAIR}"
+                sh "chmod 400 ${ANS_KEYPAIR}"
+            }
+        }
+
         stage('Create Kubernetes Cluster for QA Automation Build') {
             steps {
                 echo "Setup Kubernetes Cluster for QA Automation Build for ${APP_NAME} App"
