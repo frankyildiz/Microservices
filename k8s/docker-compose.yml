@@ -81,7 +81,7 @@ services:
   mysql-server:
     image: mysql:5.7.8
     environment: 
-      MYSQL_ROOT_PASSWORD: petclinic
-      MYSQL_DATABASE: petclinic
+      MYSQL_ROOT_PASSWORD: Password1234 #Don't forget to change your password
+      MYSQL_DATABASE: microservice #Don't forget to change information
     ports:
     - 3306:3306

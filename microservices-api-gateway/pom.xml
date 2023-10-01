@@ -3,14 +3,14 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.springframework.samples.petclinic.api</groupId>
-    <artifactId>spring-petclinic-api-gateway</artifactId>
+    <groupId>org.springframework.samples.microservices.api</groupId>
+    <artifactId>spring-microservices-api-gateway</artifactId>
     <packaging>jar</packaging>
-    <description>Spring PetClinic API Gateway</description>
+    <description>Spring microservices API Gateway</description>
 
     <parent>
         <groupId>org.springframework.samples</groupId>
-        <artifactId>spring-petclinic-microservices</artifactId>
+        <artifactId>spring-microservices-microservices</artifactId>
         <version>2.1.2</version>
     </parent>
 

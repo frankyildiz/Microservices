@@ -10,20 +10,20 @@
     </parent>
 
     <groupId>org.springframework.samples</groupId>
-    <artifactId>spring-petclinic-microservices</artifactId>
+    <artifactId>microservices-microservices</artifactId>
     <version>2.1.2</version>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
 
     <modules>
-        <module>spring-petclinic-admin-server</module>
-        <module>spring-petclinic-customers-service</module>
-        <module>spring-petclinic-vets-service</module>
-        <module>spring-petclinic-visits-service</module>
-        <module>spring-petclinic-config-server</module>
-        <module>spring-petclinic-discovery-server</module>
-        <module>spring-petclinic-api-gateway</module>
-        <module>spring-petclinic-hystrix-dashboard</module>
+        <module>microservices-admin-server</module>
+        <module>microservices-customers-service</module>
+        <module>microservices-vets-service</module>
+        <module>microservices-visits-service</module>
+        <module>microservices-config-server</module>
+        <module>microservices-discovery-server</module>
+        <module>microservices-api-gateway</module>
+        <module>microservices-hystrix-dashboard</module>
     </modules>
 
     <properties>

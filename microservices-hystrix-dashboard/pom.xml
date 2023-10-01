@@ -3,13 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>spring-petclinic-microservices</artifactId>
+        <artifactId>spring-microservices-microservices</artifactId>
         <groupId>org.springframework.samples</groupId>
         <version>2.1.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>spring-petclinic-hystrix-dashboard</artifactId>
+    <artifactId>spring-microservices-hystrix-dashboard</artifactId>
     <description>Circuit breaker dashboard with with Spring Cloud Netflix Hystrix</description>
 
     <properties>
