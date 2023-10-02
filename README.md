@@ -2,7 +2,7 @@
 
 ## Description
 
-This project aims to create a full CI/CD Pipeline for microservice-based applications using Spring framework with Docker, Kubernetes, Ansible, and Jenkins deployed on Elastic Compute Cloud (EC2) Instance is used as CI/CD Server to build pipelines and monitoring with Prometheus and Grafana tools.
+This project aims to create a full CI/CD Pipeline for microservice-based applications using Spring framework with Docker, Kubernetes, Ansible, AWS, and Jenkins deployed on Elastic Compute Cloud (EC2) Instance is used as CI/CD Server to build pipelines and monitoring with Prometheus and Grafana tools.
 
 ## DevOps Pipelines
 
