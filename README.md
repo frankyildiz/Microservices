@@ -85,7 +85,7 @@ yum install java-11-amazon-corretto -y
 * Connect to your Development Server via `ssh` and clone the web app from the repository [Spring Microservices App]
 
 ``` bash
-git clone "https://github.com/frankyildiz/microservices.git"
+git clone "https://github.com/fatiyildiz/microservices.git"
 ```
 
 * Change your working directory to **microservices** and delete the **.git** directory.
