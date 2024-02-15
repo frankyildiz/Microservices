@@ -85,7 +85,7 @@ yum install java-11-amazon-corretto -y
 * Connect to your Development Server via `ssh` and clone the web app from the repository [Spring Microservices App]
 
 ``` bash
-git clone "https://github.com/frankyildiz/microservices.git"
+git clone "https://github.com/fatiyildiz/microservices.git"
 ```
 
 * Change your working directory to **microservices** and delete the **.git** directory.
@@ -2139,7 +2139,7 @@ git merge feature/msp-16
 git push origin dev
 ```
 
-## MSP 17 - Prepare Petlinic Kubernetes YAML Files
+## MSP 17 - Prepare Kubernetes YAML Files
 
 * Create `feature/msp-17` branch from `dev`.
 
