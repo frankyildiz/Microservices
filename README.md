@@ -30,9 +30,9 @@ This project aims to create a full CI/CD Pipeline for microservice-based applica
 | Local Development Environment | Prepare Development Server Cloudformation Template | MSP-5 |  Prepare development server script with Cloudformation template for developers, enabled with `Docker` , `Docker-Compose` , `Java 11` , `Git` . | feature/msp-5 |
 | Local Development Build | Prepare Dockerfiles for Microservices | MSP-6 | Prepare Dockerfiles for each microservices. | feature/msp-6 |
 | Local Development Environment | Prepare Script for Building Docker Images | MSP-7 |  Prepare a script to package and build the docker images for all microservices. | feature/msp-7 |
-| Local Development Build | Create Docker Compose File for Local Development | MSP-8-1 |  Prepare docker compose file to deploy the application lofranky. | feature/msp-8 |
-| Local Development Build | Create Docker Compose File for Local Development | MSP-8-2 |  Prepare a script to test the deployment of the app lofranky. | feature/msp-8 |
-| Testing Environment Setup | Implement Unit Tests | MSP-9-1  | Implement 3 Unit Tests lofranky. | feature/msp-9 |
+| Local Development Build | Create Docker Compose File for Local Development | MSP-8-1 |  Prepare docker compose file to deploy the application locally. | feature/msp-8 |
+| Local Development Build | Create Docker Compose File for Local Development | MSP-8-2 |  Prepare a script to test the deployment of the app locally. | feature/msp-8 |
+| Testing Environment Setup | Implement Unit Tests | MSP-9-1  | Implement 3 Unit Tests locally. | feature/msp-9 |
 | Testing Environment Setup | Setup Code Coverage Tool | MSP-9-2  | Update POM file for Code Coverage Report. | feature/msp-9 |
 | Testing Environment Setup | Implement Code Coverage | MSP-9-3  | Generate Code Coverage Report manually. | feature/msp-9 |
 | Testing Environment Setup | Prepare Selenium Tests | MSP-10-1  | Prepare 3 Selenium Jobs for QA Automation Tests. | feature/msp-10 |
@@ -68,7 +68,7 @@ This project aims to create a full CI/CD Pipeline for microservice-based applica
 #! /bin/bash
 yum update -y
 hostnamectl set-hostname web-dev-server
-amazon-linux-extras install docker -y
+yum install docker -y
 systemctl start docker
 systemctl enable docker
 usermod -a -G docker ec2-user
@@ -85,7 +85,7 @@ yum install java-11-amazon-corretto -y
 * Connect to your Development Server via `ssh` and clone the web app from the repository [Spring Microservices App]
 
 ``` bash
-git clone "https://github.com/fatiyildiz/microservices.git"
+git clone "https://github.com/fatiyildiz/Microservices-CI-CD-Pipeline.git"
 ```
 
 * Change your working directory to **microservices** and delete the **.git** directory.
@@ -207,7 +207,7 @@ mkdir infrastructure
 #! /bin/bash
 yum update -y
 hostnamectl set-hostname web-dev-server
-amazon-linux-extras install docker -y
+yum install docker -y
 systemctl start docker
 systemctl enable docker
 usermod -a -G docker ec2-user
@@ -434,7 +434,7 @@ git branch feature/msp-8
 git checkout feature/msp-8
 ```
 
-* Prepare docker compose file to deploy the application lofranky and save it as `docker-compose-local.yml` under `microservices` folder.
+* Prepare docker compose file to deploy the application locally and save it as `docker-compose-local.yml` under `microservices` folder.
 
 ``` yaml
 version: '2'
@@ -557,7 +557,7 @@ services:
     - 3306:3306
 ```
 
-* Prepare a script to test the deployment of the app lofranky with `docker-compose-local.yml` and save it as `test-local-deployment.sh` under `microservices` folder.
+* Prepare a script to test the deployment of the app locally with `docker-compose-local.yml` and save it as `test-local-deployment.sh` under `microservices` folder.
 
 ``` bash
 docker-compose -f docker-compose-local.yml up
@@ -621,11 +621,11 @@ public class PetTest {
         //Arrange
         Pet pet = new Pet();
         Owner owner = new Owner();
-        owner.setFirstName("frank");
+        owner.setFirstName("fati");
         //Act
         pet.setOwner(owner);
         //Assert
-        assertEquals("frank", pet.getOwner().getFirstName());
+        assertEquals("fati", pet.getOwner().getFirstName());
     }
     @Test
     public void testBirthDate(){
@@ -640,7 +640,7 @@ public class PetTest {
 }
 ```
 
-* Implement unit tests with maven wrapper for only `customer-service` microservice lofranky on `Dev Server`. Execute the following command under the `microservices-customers-service folder`.
+* Implement unit tests with maven wrapper for only `customer-service` microservice locally on `Dev Server`. Execute the following command under the `microservices-customers-service folder`.
 
 ``` bash
 ../mvnw clean test
@@ -679,7 +679,7 @@ git push --set-upstream origin feature/msp-9
 </plugin>
 ```
 
-* Create code coverage report for only `customer-service` microservice lofranky on `Dev Server`. Execute the following command under the `microservices-customers-service folder`.
+* Create code coverage report for only `customer-service` microservice locally on `Dev Server`. Execute the following command under the `microservices-customers-service folder`.
 
 ``` bash
 ../mvnw test
@@ -791,7 +791,7 @@ all_link.click()
 sleep(2)
 # Register new Owner to web App
 fn_field = driver.find_element_by_name('firstName')
-fn = 'frank' + str(random.randint(0, 100))
+fn = 'fati' + str(random.randint(0, 100))
 fn_field.send_keys(fn)
 sleep(1)
 fn_field = driver.find_element_by_name('lastName')
@@ -1040,7 +1040,7 @@ git checkout feature/msp-14
 
 ``` bash
 PATH="$PATH:/usr/local/bin"
-APP_REPO_NAME="frankyildiz/microservices-app-dev"
+APP_REPO_NAME="fatiyildiz/microservices-app-dev"
 AWS_REGION="us-east-1"
 
 aws ecr create-repository \
@@ -1054,7 +1054,7 @@ aws ecr create-repository \
 
 ``` bash
 PATH="$PATH:/usr/local/bin"
-APP_REPO_NAME="frankyildiz/microservices-app-dev"
+APP_REPO_NAME="fatiyildiz/microservices-app-dev"
 AWS_REGION="us-east-1"
 
 aws ecr create-repository \
@@ -1488,17 +1488,17 @@ module "iam" {
   source = "./modules/IAM"
 }
 
-resource "aws_security_group" "frank-kube-mutual-sg" {
-  name = "kube-mutual-sec-group-for-frank"
+resource "aws_security_group" "fati-kube-mutual-sg" {
+  name = "kube-mutual-sec-group-for-fati"
 }
 
-resource "aws_security_group" "frank-kube-worker-sg" {
-  name = "kube-worker-sec-group-for-frank"
+resource "aws_security_group" "fati-kube-worker-sg" {
+  name = "kube-worker-sec-group-for-fati"
   ingress {
     protocol = "tcp"
     from_port = 10250
     to_port = 10250
-    security_groups = [aws_security_group.frank-kube-mutual-sg.id]
+    security_groups = [aws_security_group.fati-kube-mutual-sg.id]
   }
   ingress {
     protocol = "tcp"
@@ -1518,7 +1518,7 @@ resource "aws_security_group" "frank-kube-worker-sg" {
     protocol = "udp"
     from_port = 8472
     to_port = 8472
-    security_groups = [aws_security_group.frank-kube-mutual-sg.id]
+    security_groups = [aws_security_group.fati-kube-mutual-sg.id]
   }
   
   egress{
@@ -1529,12 +1529,12 @@ resource "aws_security_group" "frank-kube-worker-sg" {
   }
   tags = {
     Name = "kube-worker-secgroup"
-    "kubernetes.io/cluster/franksCluster" = "owned"
+    "kubernetes.io/cluster/fatisCluster" = "owned"
   }
 }
 
-resource "aws_security_group" "frank-kube-master-sg" {
-  name = "kube-master-sec-group-for-frank"
+resource "aws_security_group" "fati-kube-master-sg" {
+  name = "kube-master-sec-group-for-fati"
 
   ingress {
     protocol = "tcp"
@@ -1553,7 +1553,7 @@ resource "aws_security_group" "frank-kube-master-sg" {
     from_port = 6443
     to_port = 6443
     cidr_blocks = ["0.0.0.0/0"]
-    #security_groups = [aws_security_group.frank-kube-mutual-sg.id]
+    #security_groups = [aws_security_group.fati-kube-mutual-sg.id]
   }
   ingress {
     protocol = "tcp"
@@ -1565,31 +1565,31 @@ resource "aws_security_group" "frank-kube-master-sg" {
     protocol = "tcp"
     from_port = 2380
     to_port = 2380
-    security_groups = [aws_security_group.frank-kube-mutual-sg.id]
+    security_groups = [aws_security_group.fati-kube-mutual-sg.id]
   }
   ingress {
     protocol = "tcp"
     from_port = 2379
     to_port = 2379
-    security_groups = [aws_security_group.frank-kube-mutual-sg.id]
+    security_groups = [aws_security_group.fati-kube-mutual-sg.id]
   }
   ingress {
     protocol = "tcp"
     from_port = 10250
     to_port = 10250
-    security_groups = [aws_security_group.frank-kube-mutual-sg.id]
+    security_groups = [aws_security_group.fati-kube-mutual-sg.id]
   }
   ingress {
     protocol = "tcp"
     from_port = 10251
     to_port = 10251
-    security_groups = [aws_security_group.frank-kube-mutual-sg.id]
+    security_groups = [aws_security_group.fati-kube-mutual-sg.id]
   }
   ingress {
     protocol = "tcp"
     from_port = 10252
     to_port = 10252
-    security_groups = [aws_security_group.frank-kube-mutual-sg.id]
+    security_groups = [aws_security_group.fati-kube-mutual-sg.id]
   }
   ingress {
     protocol = "tcp"
@@ -1601,7 +1601,7 @@ resource "aws_security_group" "frank-kube-master-sg" {
     protocol = "udp"
     from_port = 8472
     to_port = 8472
-    security_groups = [aws_security_group.frank-kube-mutual-sg.id]
+    security_groups = [aws_security_group.fati-kube-mutual-sg.id]
   }
   egress {
     protocol = "-1"
@@ -1618,13 +1618,13 @@ resource "aws_instance" "kube-master" {
     ami = "ami-013f17f36f8b1fefb"
     instance_type = "t2.medium"
     iam_instance_profile = module.iam.master_profile_name
-    vpc_security_group_ids = [aws_security_group.frank-kube-master-sg.id, aws_security_group.frank-kube-mutual-sg.id]
-    key_name = "frankkey"
+    vpc_security_group_ids = [aws_security_group.fati-kube-master-sg.id, aws_security_group.fati-kube-mutual-sg.id]
+    key_name = "fatikey"
     subnet_id = "subnet-c41ba589"  # select own subnet_id of us-east-1a
     availability_zone = "us-east-1a"
     tags = {
         Name = "kube-master"
-        "kubernetes.io/cluster/franksCluster" = "owned"
+        "kubernetes.io/cluster/fatisCluster" = "owned"
         Project = "tera-kube-ans"
         Role = "master"
         Id = "1"
@@ -1636,13 +1636,13 @@ resource "aws_instance" "worker-1" {
     ami = "ami-013f17f36f8b1fefb"
     instance_type = "t2.medium"
         iam_instance_profile = module.iam.worker_profile_name
-    vpc_security_group_ids = [aws_security_group.frank-kube-worker-sg.id, aws_security_group.frank-kube-mutual-sg.id]
-    key_name = "frankkey"
+    vpc_security_group_ids = [aws_security_group.fati-kube-worker-sg.id, aws_security_group.fati-kube-mutual-sg.id]
+    key_name = "fatikey"
     subnet_id = "subnet-c41ba589"  # select own subnet_id of us-east-1a
     availability_zone = "us-east-1a"
     tags = {
         Name = "worker-1"
-        "kubernetes.io/cluster/franksCluster" = "owned"
+        "kubernetes.io/cluster/fatisCluster" = "owned"
         Project = "tera-kube-ans"
         Role = "worker"
         Id = "1"
@@ -1654,13 +1654,13 @@ resource "aws_instance" "worker-2" {
     ami = "ami-013f17f36f8b1fefb"
     instance_type = "t2.medium"
     iam_instance_profile = module.iam.worker_profile_name
-    vpc_security_group_ids = [aws_security_group.frank-kube-worker-sg.id, aws_security_group.frank-kube-mutual-sg.id]
-    key_name = "frankkey"
+    vpc_security_group_ids = [aws_security_group.fati-kube-worker-sg.id, aws_security_group.fati-kube-mutual-sg.id]
+    key_name = "fatikey"
     subnet_id = "subnet-c41ba589"  # select own subnet_id of us-east-1a
     availability_zone = "us-east-1a"
     tags = {
         Name = "worker-2"
-        "kubernetes.io/cluster/franksCluster" = "owned"
+        "kubernetes.io/cluster/fatisCluster" = "owned"
         Project = "tera-kube-ans"
         Role = "worker"
         Id = "2"
@@ -1735,7 +1735,7 @@ terraform --version
 
 ```bash
 PATH="$PATH:/usr/local/bin"
-ANS_KEYPAIR="frank-ansible-test-dev.key"
+ANS_KEYPAIR="fati-ansible-test-dev.key"
 AWS_REGION="us-east-1"
 aws ec2 create-key-pair --region ${AWS_REGION} --key-name ${ANS_KEYPAIR} --query "KeyMaterial" --output text > ${ANS_KEYPAIR}
 chmod 400 ${ANS_KEYPAIR}
@@ -1745,10 +1745,10 @@ chmod 400 ${ANS_KEYPAIR}
 
 ```bash
 PATH="$PATH:/usr/local/bin"
-ANS_KEYPAIR="frank-ansible-test-dev.key"
+ANS_KEYPAIR="fati-ansible-test-dev.key"
 AWS_REGION="us-east-1"
 cd infrastructure/dev-k8s-terraform
-sed -i "s/frankkey/$ANS_KEYPAIR/g" main.tf
+sed -i "s/fatikey/$ANS_KEYPAIR/g" main.tf
 terraform init
 terraform apply -auto-approve -no-color
 ```
@@ -1756,7 +1756,7 @@ terraform apply -auto-approve -no-color
 - After running the job above, replace the script with the one below in order to test SSH connection with one of the instances.
 
 ```bash
-ANS_KEYPAIR="frank-ansible-test-dev.key"
+ANS_KEYPAIR="fati-ansible-test-dev.key"
 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i ${WORKSPACE}/${ANS_KEYPAIR} ubuntu@172.31.84.74 hostname
 ```
 
@@ -1780,7 +1780,7 @@ git push --set-upstream origin feature/msp-16
 
 ```bash
 PATH="$PATH:/usr/local/bin"
-ANS_KEYPAIR="frank-ansible-test-dev.key"
+ANS_KEYPAIR="fati-ansible-test-dev.key"
 export ANSIBLE_INVENTORY="${WORKSPACE}/ansible/inventory/hosts.ini"
 export ANSIBLE_PRIVATE_KEY_FILE="${WORKSPACE}/${ANS_KEYPAIR}"
 export ANSIBLE_HOST_KEY_CHECKING=False
@@ -1819,8 +1819,8 @@ git push
 - Configure `test-creating-qa-automation-infrastructure` job and replace the existing script with the one below in order to check the Ansible dynamic inventory for `dev` environment.
 
 ```bash
-APP_NAME="frank-yildiz"
-ANS_KEYPAIR="frank-ansible-test-dev.key"
+APP_NAME="fati-yildiz"
+ANS_KEYPAIR="fati-ansible-test-dev.key"
 PATH="$PATH:/usr/local/bin"
 export ANSIBLE_PRIVATE_KEY_FILE="${WORKSPACE}/${ANS_KEYPAIR}"
 export ANSIBLE_HOST_KEY_CHECKING=False
@@ -1831,8 +1831,8 @@ ansible-inventory -v -i ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.
 
 ```bash
 # Test dev dynamic inventory by pinging
-APP_NAME="frank-yildiz"
-ANS_KEYPAIR="frank-ansible-test-dev.key"
+APP_NAME="fati-yildiz"
+ANS_KEYPAIR="fati-ansible-test-dev.key"
 PATH="$PATH:/usr/local/bin"
 export ANSIBLE_PRIVATE_KEY_FILE="${WORKSPACE}/${ANS_KEYPAIR}"
 export ANSIBLE_HOST_KEY_CHECKING=False
@@ -1869,7 +1869,7 @@ cgroupDriver: systemd
 ```
 
 - The fields in the `clusterconfig-base.yml` file:
-    - ```controlePlaneEndpoint:``` Private IP address of the master node. (It will be paste programmatifranky.)
+    - ```controlePlaneEndpoint:``` Private IP address of the master node. (It will be paste programmatically.)
     - ```podSubnet:``` Pod CIDR is necessary for Flannel CNI Plug-in.
     - ```cloud-provider:``` With the value ```external``` Kubernetes cluster will be aware of the cloud controller manager. So that the cloud controller manager can implement specific tasks related to nodes, services etc.
 
@@ -1913,8 +1913,8 @@ allowedTopologies:
   - name: Enable the nodes to see bridged traffic
     shell: |
       cat << EOF | sudo tee /etc/sysctl.d/k8s.conf
-      net.bridge.bridge-nf-frank-ip6tables = 1
-      net.bridge.bridge-nf-frank-iptables = 1
+      net.bridge.bridge-nf-fati-ip6tables = 1
+      net.bridge.bridge-nf-fati-iptables = 1
       EOF
       sysctl --system
 
@@ -2074,8 +2074,8 @@ git push
 - Configure `test-creating-qa-automation-infrastructure` job and replace the existing script with the one below in order to test the playbooks to create a Kubernetes cluster.
 
 ```bash
-APP_NAME="frank-yildiz"
-ANS_KEYPAIR="frank-ansible-test-dev.key"
+APP_NAME="fati-yildiz"
+ANS_KEYPAIR="fati-ansible-test-dev.key"
 PATH="$PATH:/usr/local/bin"
 export ANSIBLE_PRIVATE_KEY_FILE="${WORKSPACE}/${ANS_KEYPAIR}"
 export ANSIBLE_HOST_KEY_CHECKING=False
@@ -2094,7 +2094,7 @@ terraform destroy -auto-approve -no-color
 
 ```bash
 PATH="$PATH:/usr/local/bin"
-ANS_KEYPAIR="frank-ansible-test-dev.key"
+ANS_KEYPAIR="fati-ansible-test-dev.key"
 AWS_REGION="us-east-1"
 aws ec2 delete-key-pair --region ${AWS_REGION} --key-name ${ANS_KEYPAIR}
 rm -rf ${ANS_KEYPAIR}
@@ -2105,8 +2105,8 @@ rm -rf ${ANS_KEYPAIR}
 ```bash
 # Environment variables
 PATH="$PATH:/usr/local/bin"
-APP_NAME="frank-yildiz"
-ANS_KEYPAIR="frank-$APP_NAME-dev-${BUILD_NUMBER}.key"
+APP_NAME="fati-yildiz"
+ANS_KEYPAIR="fati-$APP_NAME-dev-${BUILD_NUMBER}.key"
 AWS_REGION="us-east-1"
 export ANSIBLE_PRIVATE_KEY_FILE="${WORKSPACE}/${ANS_KEYPAIR}"
 export ANSIBLE_HOST_KEY_CHECKING=False
@@ -2149,7 +2149,7 @@ git branch feature/msp-17
 git checkout feature/msp-17
 ```
 
-* Create a folder with name of `k8s` under `microservices` folder for keeping the manifest files of frank-yildiz App on Kubernetes cluster.
+* Create a folder with name of `k8s` under `microservices` folder for keeping the manifest files of fati-yildiz App on Kubernetes cluster.
 
 * Create a `docker-compose.yml` under `k8s` folder with the following content as to be used in conversion the k8s files.
 
@@ -2323,11 +2323,11 @@ DNS_NAME: "DNS Name of your application"
 
 * This pattern helps you to manage Helm v3 charts efficiently by integrating the Helm v3 repository into Amazon Simple Storage Service (Amazon S3) on the Amazon Web Services (AWS) Cloud. (https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/set-up-a-helm-v3-chart-repository-in-amazon-s3.html)
 
-* Create an S3 bucket for Helm charts. In the bucket, create a folder franked stable/myapp. The example in this pattern uses s3://frank-yildiz-helm-charts-microservices/stable/myapp as the target chart repository.
+* Create an S3 bucket for Helm charts. In the bucket, create a folder stable/myapp. The example in this pattern uses s3://fati-yildiz-helm-charts-microservices/stable/myapp as the target chart repository.
 
 ```bash
-aws s3api create-bucket --bucket frank-yildiz-helm-charts-microservices --region us-east-1
-aws s3api put-object --bucket frank-yildiz-helm-charts-microservices --key stable/myapp/
+aws s3api create-bucket --bucket fati-yildiz-helm-charts-microservices --region us-east-1
+aws s3api put-object --bucket fati-yildiz-helm-charts-microservices --key stable/myapp/
 ```
 
 * Install the helm-s3 plugin for Amazon S3.
@@ -2348,7 +2348,7 @@ helm plugin install https://github.com/hypnoglow/helm-s3.git
 * Initialize the Amazon S3 Helm repository.
 
 ```bash
-AWS_REGION=us-east-1 helm s3 init s3://frank-yildiz-helm-charts-microservices/stable/myapp 
+AWS_REGION=us-east-1 helm s3 init s3://fati-yildiz-helm-charts-microservices/stable/myapp 
 ```
 
 * The command creates an index.yaml file in the target to track all the chart information that is stored at that location.
@@ -2356,14 +2356,14 @@ AWS_REGION=us-east-1 helm s3 init s3://frank-yildiz-helm-charts-microservices/st
 * Verify that the index.yaml file was created.
 
 ```bash
-aws s3 ls s3://frank-yildiz-helm-charts-microservices/stable/myapp/
+aws s3 ls s3://fati-yildiz-helm-charts-microservices/stable/myapp/
 ```
 
 * Add the Amazon S3 repository to Helm on the client machine. 
 
 ```bash
 helm repo ls
-AWS_REGION=us-east-1 helm repo add stable-frank-yildiz s3://frank-yildiz-helm-charts-microservices/stable/myapp/
+AWS_REGION=us-east-1 helm repo add stable-fati-yildiz s3://fati-yildiz-helm-charts-microservices/stable/myapp/
 ```
 
 * Update `version` and `appVersion` field of `k8s/microservices_chart/Chart.yaml` file as below for testing.
@@ -2383,20 +2383,20 @@ helm package microservices_chart/
 * Store the local package in the Amazon S3 Helm repository.
 
 ```bash
-HELM_S3_MODE=3 AWS_REGION=us-east-1 helm s3 push ./microservices_chart-0.0.1.tgz stable-frank-yildiz
+HELM_S3_MODE=3 AWS_REGION=us-east-1 helm s3 push ./microservices_chart-0.0.1.tgz stable-fati-yildiz
 ```
 
 * Search for the Helm chart.
 
 ```bash
-helm search repo stable-frank-yildiz
+helm search repo stable-fati-yildiz
 ```
 
 * You get an output as below.
 
 ```bash
 NAME                                    CHART VERSION   APP VERSION     DESCRIPTION                
-stable-frank-yildiz/microservices_chart     0.0.1           0.1.0           A Helm chart for Kubernetes
+stable-fati-yildiz/microservices_chart     0.0.1           0.1.0           A Helm chart for Kubernetes
 ```
 
 * In Chart.yaml, set the `version` value to `0.0.2` in Chart.yaml, and then package the chart, this time changing the version in Chart.yaml to 0.0.2. Version control is ideally achieved through automation by using tools like GitVersion or Jenkins build numbers in a CI/CD pipeline. 
@@ -2408,36 +2408,36 @@ helm package microservices_chart/
 * Push the new version to the Helm repository in Amazon S3.
 
 ```bash
-HELM_S3_MODE=3 AWS_REGION=us-east-1 helm s3 push ./microservices_chart-1.1.2.tgz stable-frank-yildiz
+HELM_S3_MODE=3 AWS_REGION=us-east-1 helm s3 push ./microservices_chart-1.1.2.tgz stable-fati-yildiz
 ```
 
 * Verify the updated Helm chart.
 
 ```bash
 helm repo update
-helm search repo stable-frank-yildiz
-helm search repo stable-frank-yildiz -l
+helm search repo stable-fati-yildiz
+helm search repo stable-fati-yildiz -l
 ```
 
 * You get an output as below.
 
 ```bash
 NAME                                    CHART VERSION   APP VERSION     DESCRIPTION                
-stable-frank-yildiz/microservices_chart     0.0.2           0.1.0           A Helm chart for Kubernetes
+stable-fati-yildiz/microservices_chart     0.0.2           0.1.0           A Helm chart for Kubernetes
 ```
 
 * To view all the available versions of a chart execute following command.
 
 ```bash
-helm search repo stable-frank-yildiz --versions
+helm search repo stable-fati-yildiz --versions
 ```
 
 * Output:
 
 ```bash
 NAME                                    CHART VERSION   APP VERSION     DESCRIPTION                
-stable-frank-yildiz/microservices_chart     0.0.2           0.1.0           A Helm chart for Kubernetes
-stable-frank-yildiz/microservices_chart     0.0.1           0.1.0           A Helm chart for Kubernetes
+stable-fati-yildiz/microservices_chart     0.0.2           0.1.0           A Helm chart for Kubernetes
+stable-fati-yildiz/microservices_chart     0.0.1           0.1.0           A Helm chart for Kubernetes
 ```
 
 * In Chart.yaml, set the `version` value to `HELM_VERSION` in Chart.yaml for automation in jenkins pipeline.
@@ -2542,7 +2542,7 @@ git push --set-upstream origin feature/msp-18
       * Write below script into the `Command`
         ```bash
         PATH="$PATH:/usr/local/bin"
-        APP_REPO_NAME="frank/frank-yildiz-app-dev" # Write your own repo name
+        APP_REPO_NAME="fati/fati-yildiz-app-dev" # Write your own repo name
         AWS_REGION="us-east-1" #Update this line if you work on another region
         ECR_REGISTRY="817402029646.dkr.ecr.us-east-1.amazonaws.com" # Replace this line with your ECR name
         aws ecr create-repository \
@@ -2558,7 +2558,7 @@ git push --set-upstream origin feature/msp-18
       * Click `Save`
       * Click `Build now` to manually start the job.
 
-- Create Ansible playbook for deploying application as `dev-frank-yildiz-deploy-template` under `ansible/playbooks` folder.
+- Create Ansible playbook for deploying application as `dev-fati-yildiz-deploy-template` under `ansible/playbooks` folder.
 
 ```yaml
 - hosts: role_master
@@ -2576,19 +2576,19 @@ git push --set-upstream origin feature/msp-18
       src: $JENKINS_HOME/.docker/config.json
       dest: /home/ubuntu/.docker/config.json
 
-  - name: deploy frank-yildiz application
+  - name: deploy fati-yildiz application
     shell: |
       helm plugin install https://github.com/hypnoglow/helm-s3.git
-      kubectl create ns frank-yildiz-dev
-      kubectl delete secret regcred -n frank-yildiz-dev || true
-      kubectl create secret generic regcred -n frank-yildiz-dev \
+      kubectl create ns fati-yildiz-dev
+      kubectl delete secret regcred -n fati-yildiz-dev || true
+      kubectl create secret generic regcred -n fati-yildiz-dev \
         --from-file=.dockerconfigjson=/home/ubuntu/.docker/config.json \
         --type=kubernetes.io/dockerconfigjson
-      AWS_REGION=$AWS_REGION helm repo add stable-frank-yildiz s3://frank-yildiz-helm-charts-microservices/stable/myapp/
+      AWS_REGION=$AWS_REGION helm repo add stable-fati-yildiz s3://fati-yildiz-helm-charts-microservices/stable/myapp/
       AWS_REGION=$AWS_REGION helm repo update
       AWS_REGION=$AWS_REGION helm upgrade --install \
-        frank-yildiz-app-release stable-frank-yildiz/microservices_chart --version ${BUILD_NUMBER} \
-        --namespace frank-yildiz-dev
+        fati-yildiz-app-release stable-fati-yildiz/microservices_chart --version ${BUILD_NUMBER} \
+        --namespace fati-yildiz-dev
 ```
 
 - Create Selenium dummy test with name of `dummy_selenium_test_headless.py` with following content to check the setup for the Selenium jobs and save it under `selenium-jobs` folder.
@@ -2619,7 +2619,7 @@ driver.close()
 - hosts: all
   tasks:
   - name: run dummy selenium job
-    shell: "docker run --rm -v {{ workspace }}:{{ workspace }} -w {{ workspace }} frankahanclarus/selenium-py-chrome:latest python {{ item }}"
+    shell: "docker run --rm -v {{ workspace }}:{{ workspace }} -w {{ workspace }} callahanclarus/selenium-py-chrome:latest python {{ item }}"
     with_fileglob: "{{ workspace }}/selenium-jobs/dummy*.py"
     register: output
   
@@ -2659,7 +2659,7 @@ git push --set-upstream origin feature/msp-18
 - hosts: all
   tasks:
   - name: run all selenium jobs
-    shell: "docker run --rm --env MASTER_PUBLIC_IP={{ master_public_ip }} -v {{ workspace }}:{{ workspace }} -w {{ workspace }} frankahanclarus/selenium-py-chrome:latest python {{ item }}"
+    shell: "docker run --rm --env MASTER_PUBLIC_IP={{ master_public_ip }} -v {{ workspace }}:{{ workspace }} -w {{ workspace }} callahanclarus/selenium-py-chrome:latest python {{ item }}"
     register: output
     with_fileglob: "{{ workspace }}/selenium-jobs/test*.py"
   
@@ -2684,19 +2684,19 @@ PATH="$PATH:/usr/local/bin"
 ansible-playbook -vvv --connection=local --inventory 127.0.0.1, --extra-vars "workspace=${WORKSPACE} master_public_ip=${MASTER_PUBLIC_IP}" ./ansible/playbooks/pb_run_selenium_jobs.yaml
 ```
 
-- Prepare a Jenkinsfile for `frank-yildiz-nightly` builds and save it as `jenkinsfile-frank-yildiz-nightly` under `jenkins` folder.
+- Prepare a Jenkinsfile for `fati-yildiz-nightly` builds and save it as `jenkinsfile-fati-yildiz-nightly` under `jenkins` folder.
 
 ```groovy
 pipeline {
     agent any
     environment {
         PATH=sh(script:"echo $PATH:/usr/local/bin", returnStdout:true).trim()
-        APP_NAME="frank-yildiz"
-        APP_REPO_NAME="frank/${APP_NAME}-app-dev"
-        AWS_ACCOUNT_ID=sh(script:'export PATH="$PATH:/usr/local/bin" && aws sts get-franker-identity --query Account --output text', returnStdout:true).trim()
+        APP_NAME="fati-yildiz"
+        APP_REPO_NAME="fati/${APP_NAME}-app-dev"
+        AWS_ACCOUNT_ID=sh(script:'export PATH="$PATH:/usr/local/bin" && aws sts get-caller-identity --query Account --output text', returnStdout:true).trim()
         AWS_REGION="us-east-1"
         ECR_REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
-        ANS_KEYPAIR="frank-${APP_NAME}-dev-${BUILD_NUMBER}.key"
+        ANS_KEYPAIR="fati-${APP_NAME}-dev-${BUILD_NUMBER}.key"
         ANSIBLE_PRIVATE_KEY_FILE="${WORKSPACE}/${ANS_KEYPAIR}"
         ANSIBLE_HOST_KEY_CHECKING="False"
     }
@@ -2770,7 +2770,7 @@ pipeline {
                 echo 'Creating QA Automation Infrastructure for Dev Environment'
                 sh """
                     cd infrastructure/dev-k8s-terraform
-                    sed -i "s/frankkey/$ANS_KEYPAIR/g" main.tf
+                    sed -i "s/fatikey/$ANS_KEYPAIR/g" main.tf
                     terraform init
                     terraform apply -auto-approve -no-color
                 """
@@ -2795,12 +2795,12 @@ pipeline {
                 echo 'Deploying App on Kubernetes'
                 sh "envsubst < k8s/microservices_chart/values-template.yaml > k8s/microservices_chart/values.yaml"
                 sh "sed -i s/HELM_VERSION/${BUILD_NUMBER}/ k8s/microservices_chart/Chart.yaml"
-                sh "helm repo add stable-frank-yildiz s3://frank-yildiz-helm-charts-microservices/stable/myapp/"
+                sh "helm repo add stable-fati-yildiz s3://fati-yildiz-helm-charts-microservices/stable/myapp/"
                 sh "helm package k8s/microservices_chart"
-                sh "helm s3 push microservices_chart-${BUILD_NUMBER}.tgz stable-frank-yildiz"
-                sh "envsubst < ansible/playbooks/dev-frank-yildiz-deploy-template > ansible/playbooks/dev-frank-yildiz-deploy.yaml"
+                sh "helm s3 push microservices_chart-${BUILD_NUMBER}.tgz stable-fati-yildiz"
+                sh "envsubst < ansible/playbooks/dev-fati-yildiz-deploy-template > ansible/playbooks/dev-fati-yildiz-deploy.yaml"
                 sh "sleep 60"    
-                sh "ansible-playbook -i ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml ./ansible/playbooks/dev-frank-yildiz-deploy.yaml"
+                sh "ansible-playbook -i ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml ./ansible/playbooks/dev-fati-yildiz-deploy.yaml"
             }
         }     
 
@@ -2856,7 +2856,7 @@ pipeline {
 }
 ```
 
-- Create a Jenkins pipeline with the name of `frank-yildiz-nightly` with the following script to run QA automation tests and configure a `cron job` to trigger the pipeline every night at midnight (`0 0 * * *`) on the `dev` branch. Input `jenkins/jenkinsfile-frank-yildiz-nightly` to the `Script Path` field. frank-yildiz nightly build pipeline should be built on a temporary QA automation environment.
+- Create a Jenkins pipeline with the name of `fati-yildiz-nightly` with the following script to run QA automation tests and configure a `cron job` to trigger the pipeline every night at midnight (`0 0 * * *`) on the `dev` branch. Input `jenkins/jenkinsfile-fati-yildiz-nightly` to the `Script Path` field. fati-yildiz nightly build pipeline should be built on a temporary QA automation environment.
 
 - Commit the change, then push the script to the remote repo.
 
@@ -2891,12 +2891,12 @@ mkdir infrastructure/qa-k8s-terraform
 cp -r infrastructure/dev-k8s-terraform/* infrastructure/qa-k8s-terraform/
 ```
 
-- Create a Jenkins Job with the name of `create-permanent-key-pair-for-frank-yildiz-qa-env` for Ansible key pair to be used in QA environment using following script, and save the script as `create-permanent-key-pair-for-qa-environment.sh` under `jenkins` folder.
+- Create a Jenkins Job with the name of `create-permanent-key-pair-for-fati-yildiz-qa-env` for Ansible key pair to be used in QA environment using following script, and save the script as `create-permanent-key-pair-for-qa-environment.sh` under `jenkins` folder.
 
 ```bash
 PATH="$PATH:/usr/local/bin"
-APP_NAME="frank-yildiz"
-ANS_KEYPAIR="frank-${APP_NAME}-qa.key"
+APP_NAME="fati-yildiz"
+ANS_KEYPAIR="fati-${APP_NAME}-qa.key"
 AWS_REGION="us-east-1"
 aws ec2 create-key-pair --region ${AWS_REGION} --key-name ${ANS_KEYPAIR} --query "KeyMaterial" --output text > ${ANS_KEYPAIR}
 chmod 400 ${ANS_KEYPAIR}
@@ -2909,8 +2909,8 @@ ls -al ${JENKINS_HOME}/.ssh
 
 ```bash
 PATH="$PATH:/usr/local/bin"
-APP_NAME="frank-yildiz"
-ANS_KEYPAIR="frank-${APP_NAME}-qa.key"
+APP_NAME="fati-yildiz"
+ANS_KEYPAIR="fati-${APP_NAME}-qa.key"
 AWS_REGION="us-east-1"
 cd infrastructure/qa-k8s-terraform
 terraform init
@@ -2945,9 +2945,9 @@ pipeline {
     agent any
     environment {
         PATH=sh(script:"echo $PATH:/usr/local/bin", returnStdout:true).trim()
-        APP_NAME="frank-yildiz"
+        APP_NAME="fati-yildiz"
         AWS_REGION="us-east-1"
-        ANS_KEYPAIR="frank-${APP_NAME}-qa.key"
+        ANS_KEYPAIR="fati-${APP_NAME}-qa.key"
         ANSIBLE_PRIVATE_KEY_FILE="${JENKINS_HOME}/.ssh/${ANS_KEYPAIR}"
         ANSIBLE_HOST_KEY_CHECKING="False"
     }
@@ -2957,7 +2957,7 @@ pipeline {
                 echo 'Creating QA Automation Infrastructure for QA Environment'
                 sh """
                     cd infrastructure/qa-k8s-terraform
-                    sed -i "s/frankkey/$ANS_KEYPAIR/g" main.tf
+                    sed -i "s/fatikey/$ANS_KEYPAIR/g" main.tf
                     terraform init
                     terraform apply -auto-approve -no-color
                 """
@@ -3010,11 +3010,11 @@ git branch feature/msp-20
 git checkout feature/msp-20
 ```
 
-- Create a Jenkins Job and name it as `create-ecr-docker-registry-for-frank-yildiz-qa` to create Docker Registry for `QA` manually on AWS ECR.
+- Create a Jenkins Job and name it as `create-ecr-docker-registry-for-fati-yildiz-qa` to create Docker Registry for `QA` manually on AWS ECR.
 
 ```bash
 PATH="$PATH:/usr/local/bin"
-APP_REPO_NAME="frank/frank-yildiz-app-qa"
+APP_REPO_NAME="fati/fati-yildiz-app-qa"
 AWS_REGION="us-east-1"
 
 aws ecr create-repository \
@@ -3078,7 +3078,7 @@ docker push "${IMAGE_TAG_GRAFANA_SERVICE}"
 docker push "${IMAGE_TAG_PROMETHEUS_SERVICE}"
 ```
 
-- Create Ansible playbook for deploying application as `qa-frank-yildiz-deploy-template` under `ansible/playbooks` folder.
+- Create Ansible playbook for deploying application as `qa-fati-yildiz-deploy-template` under `ansible/playbooks` folder.
 
 ```yaml
 - hosts: role_master
@@ -3096,19 +3096,19 @@ docker push "${IMAGE_TAG_PROMETHEUS_SERVICE}"
       src: $JENKINS_HOME/.docker/config.json
       dest: /home/ubuntu/.docker/config.json
 
-  - name: deploy frank-yildiz application
+  - name: deploy fati-yildiz application
     shell: |
       helm plugin install https://github.com/hypnoglow/helm-s3.git
-      kubectl create ns frank-yildiz-qa
-      kubectl delete secret regcred -n frank-yildiz-qa || true
-      kubectl create secret generic regcred -n frank-yildiz-qa \
+      kubectl create ns fati-yildiz-qa
+      kubectl delete secret regcred -n fati-yildiz-qa || true
+      kubectl create secret generic regcred -n fati-yildiz-qa \
         --from-file=.dockerconfigjson=/home/ubuntu/.docker/config.json \
         --type=kubernetes.io/dockerconfigjson
-      AWS_REGION=$AWS_REGION helm repo add stable-frank-yildiz s3://frank-yildiz-helm-charts-microservices/stable/myapp/
+      AWS_REGION=$AWS_REGION helm repo add stable-fati-yildiz s3://fati-yildiz-helm-charts-microservices/stable/myapp/
       AWS_REGION=$AWS_REGION helm repo update
       AWS_REGION=$AWS_REGION helm upgrade --install \
-        frank-yildiz-app-release stable-frank-yildiz/microservices_chart --version ${BUILD_NUMBER} \
-        --namespace frank-yildiz-qa
+        fati-yildiz-app-release stable-fati-yildiz/microservices_chart --version ${BUILD_NUMBER} \
+        --namespace fati-yildiz-qa
 ```
 
 - Prepare a script to deploy the application on QA environment and save it as `deploy_app_on_qa_environment.sh` under `ansible/scripts` folder.
@@ -3117,12 +3117,12 @@ docker push "${IMAGE_TAG_PROMETHEUS_SERVICE}"
 echo 'Deploying App on Kubernetes'
 envsubst < k8s/microservices_chart/values-template.yaml > k8s/microservices_chart/values.yaml
 sed -i s/HELM_VERSION/${BUILD_NUMBER}/ k8s/microservices_chart/Chart.yaml
-AWS_REGION=$AWS_REGION helm repo add stable-frank-yildiz s3://frank-yildiz-helm-charts-microservices/stable/myapp/ || echo "repository name already exists"
+AWS_REGION=$AWS_REGION helm repo add stable-fati-yildiz s3://fati-yildiz-helm-charts-microservices/stable/myapp/ || echo "repository name already exists"
 AWS_REGION=$AWS_REGION helm repo update
 helm package k8s/microservices_chart
-AWS_REGION=$AWS_REGION helm s3 push microservices_chart-${BUILD_NUMBER}.tgz stable-frank-yildiz
-envsubst < ansible/playbooks/qa-frank-yildiz-deploy-template >ansible/playbooks/qa-frank-yildiz-deploy.yaml
-ansible-playbook -i ./ansible/inventory/qa_stack_dynamic_inventory_aws_ec2.yaml ./ansible/playbooks/qa-frank-yildiz-deploy.yaml
+AWS_REGION=$AWS_REGION helm s3 push microservices_chart-${BUILD_NUMBER}.tgz stable-fati-yildiz
+envsubst < ansible/playbooks/qa-fati-yildiz-deploy-template >ansible/playbooks/qa-fati-yildiz-deploy.yaml
+ansible-playbook -i ./ansible/inventory/qa_stack_dynamic_inventory_aws_ec2.yaml ./ansible/playbooks/qa-fati-yildiz-deploy.yaml
 ```
 
 - Commit the change, then push the script to the remote repo.
@@ -3146,14 +3146,14 @@ git branch feature/msp-21
 git checkout feature/msp-21
 ```
 
-- Create a Jenkins Job with name of `build-and-deploy-frank-yildiz-on-qa-env` to build and deploy the app on `QA environment` manually on `release` branch using following script, and save the script as `build-and-deploy-frank-yildiz-on-qa-env-manually.sh` under `jenkins` folder.
+- Create a Jenkins Job with name of `build-and-deploy-fati-yildiz-on-qa-env` to build and deploy the app on `QA environment` manually on `release` branch using following script, and save the script as `build-and-deploy-fati-yildiz-on-qa-env-manually.sh` under `jenkins` folder.
 
 ```bash
 PATH="$PATH:/usr/local/bin"
-APP_NAME="frank-yildiz"
-APP_REPO_NAME="frank/frank-yildiz-app-qa"
-ANS_KEYPAIR="frank-${APP_NAME}-qa.key"
-AWS_ACCOUNT_ID=$(aws sts get-franker-identity --query Account --output text)
+APP_NAME="fati-yildiz"
+APP_REPO_NAME="fati/fati-yildiz-app-qa"
+ANS_KEYPAIR="fati-${APP_NAME}-qa.key"
+AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 export AWS_REGION="us-east-1"
 ECR_REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
 export ANSIBLE_PRIVATE_KEY_FILE="${JENKINS_HOME}/.ssh/${ANS_KEYPAIR}"
@@ -3183,7 +3183,7 @@ git merge feature/msp-21
 git push origin dev
 ```
 
-- Merge `dev` into `release` branch, then run `build-and-deploy-frank-yildiz-on-qa-env` job to build and deploy the app on `QA environment` manually.
+- Merge `dev` into `release` branch, then run `build-and-deploy-fati-yildiz-on-qa-env` job to build and deploy the app on `QA environment` manually.
 
 ```bash
 git checkout release
@@ -3201,19 +3201,19 @@ git branch feature/msp-22
 git checkout feature/msp-22
 ```
 
-- Create a QA Pipeline on Jenkins with name of `frank-yildiz-weekly-qa` with following script and configure a `cron job` to trigger the pipeline every Sundays at midnight (`59 23 * * 0`) on `release` branch. frank-yildiz weekly build pipeline should be built on permanent QA environment.
+- Create a QA Pipeline on Jenkins with name of `fati-yildiz-weekly-qa` with following script and configure a `cron job` to trigger the pipeline every Sundays at midnight (`59 23 * * 0`) on `release` branch. fati-yildiz weekly build pipeline should be built on permanent QA environment.
 
-- Prepare a Jenkinsfile for `frank-yildiz-weekly-qa` builds and save it as `jenkinsfile-frank-yildiz-weekly-qa` under `jenkins` folder.
+- Prepare a Jenkinsfile for `fati-yildiz-weekly-qa` builds and save it as `jenkinsfile-fati-yildiz-weekly-qa` under `jenkins` folder.
 
 ```groovy
 pipeline {
     agent any
     environment {
         PATH=sh(script:"echo $PATH:/usr/local/bin", returnStdout:true).trim()
-        APP_NAME="frank-yildiz"
-        APP_REPO_NAME="frank/frank-yildiz-app-qa"
-        ANS_KEYPAIR="frank-frank-yildiz-qa.key"
-        AWS_ACCOUNT_ID=sh(script:'export PATH="$PATH:/usr/local/bin" && aws sts get-franker-identity --query Account --output text', returnStdout:true).trim()
+        APP_NAME="fati-yildiz"
+        APP_REPO_NAME="fati/fati-yildiz-app-qa"
+        ANS_KEYPAIR="fati-fati-yildiz-qa.key"
+        AWS_ACCOUNT_ID=sh(script:'export PATH="$PATH:/usr/local/bin" && aws sts get-caller-identity --query Account --output text', returnStdout:true).trim()
         AWS_REGION="us-east-1"
         ECR_REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
         ANSIBLE_PRIVATE_KEY_FILE="${JENKINS_HOME}/.ssh/${ANS_KEYPAIR}"
@@ -3284,7 +3284,7 @@ pipeline {
 
 ```bash
 git add .
-git commit -m 'added jenkinsfile frank-yildiz-weekly-qa for release branch'
+git commit -m 'added jenkinsfile fati-yildiz-weekly-qa for release branch'
 git push --set-upstream origin feature/msp-22
 git checkout dev
 git merge feature/msp-22
@@ -3311,7 +3311,7 @@ git checkout feature/msp-23
 
 * Explain [Rancher Container Management Tool](https://rancher.com/docs/rancher/v2.x/en/overview/architecture/).
 
-* Create an IAM Policy with name of `frank-rke-controlplane-policy.json` and also save it under `infrastructure` for `Control Plane` node to enable Rancher to create or remove EC2 resources.
+* Create an IAM Policy with name of `fati-rke-controlplane-policy.json` and also save it under `infrastructure` for `Control Plane` node to enable Rancher to create or remove EC2 resources.
 
 ``` json
 {
@@ -3383,7 +3383,7 @@ git checkout feature/msp-23
 }
 ```
 
-* Create an IAM Policy with name of `frank-rke-etcd-worker-policy.json` and also save it under `infrastructure` for `etcd` or `worker` nodes to enable Rancher to get information from EC2 resources.
+* Create an IAM Policy with name of `fati-rke-etcd-worker-policy.json` and also save it under `infrastructure` for `etcd` or `worker` nodes to enable Rancher to get information from EC2 resources.
 
 ```json
 {
@@ -3408,11 +3408,11 @@ git checkout feature/msp-23
 }
 ```
 
-* Create an IAM Role with name of `frank-rke-role` to attach RKE nodes (instances) using `frank-rke-controlplane-policy` and `frank-rke-etcd-worker-policy`.
+* Create an IAM Role with name of `fati-rke-role` to attach RKE nodes (instances) using `fati-rke-controlplane-policy` and `fati-rke-etcd-worker-policy`.
 
-* Create a security group for External Application Load Balancer of Rancher with name of `frank-rke-alb-sg` and allow HTTP (Port 80) and HTTPS (Port 443) connections from anywhere.
+* Create a security group for External Application Load Balancer of Rancher with name of `fati-rke-alb-sg` and allow HTTP (Port 80) and HTTPS (Port 443) connections from anywhere.
   
-* Create a security group for RKE Kubernetes Cluster with name of `frank-rke-cluster-sg` and define following inbound and outbound rules.
+* Create a security group for RKE Kubernetes Cluster with name of `fati-rke-cluster-sg` and define following inbound and outbound rules.
 
   * Inbound rules;
 
@@ -3434,18 +3434,18 @@ git checkout feature/msp-23
 
     * Allow TCP on port 2376 to any node IP from a node created using Node Driver for Docker machine TLS port.
 
-  * Allow all protocol on all port from `frank-rke-cluster-sg` for self communication between Rancher `controlplane`, `etcd`, `worker` nodes.
+  * Allow all protocol on all port from `fati-rke-cluster-sg` for self communication between Rancher `controlplane`, `etcd`, `worker` nodes.
 
-* Log into Jenkins Server and create `frank-rancher.pem` key-pair for Rancher Server using AWS CLI
+* Log into Jenkins Server and create `fati-rancher.pem` key-pair for Rancher Server using AWS CLI
   
 ```bash
-aws ec2 create-key-pair --region us-east-1 --key-name frank-rancher.pem --query KeyMaterial --output text > ~/.ssh/frank-rancher.pem
-chmod 400 ~/.ssh/frank-rancher.pem
+aws ec2 create-key-pair --region us-east-1 --key-name fati-rancher.pem --query KeyMaterial --output text > ~/.ssh/fati-rancher.pem
+chmod 400 ~/.ssh/fati-rancher.pem
 ```
 
-* Launch an EC2 instance using `Ubuntu Server 20.04 LTS (HVM) (64-bit x86)` with `t2.medium` type, 16 GB root volume,  `frank-rke-cluster-sg` security group, `frank-rke-role` IAM Role, `Name:frank-Rancher-Cluster-Instance` tag and `frank-rancher.pem` key-pair. Take note of `subnet id` of EC2. 
+* Launch an EC2 instance using `Ubuntu Server 20.04 LTS (HVM) (64-bit x86)` with `t2.medium` type, 16 GB root volume,  `fati-rke-cluster-sg` security group, `fati-rke-role` IAM Role, `Name:fati-Rancher-Cluster-Instance` tag and `fati-rancher.pem` key-pair. Take note of `subnet id` of EC2. 
 
-* Attach a tag to the `nodes (intances)`, `subnets` and `security group` for Rancher with `Key = kubernetes.io/cluster/frank-Rancher` and `Value = owned`.
+* Attach a tag to the `nodes (intances)`, `subnets` and `security group` for Rancher with `Key = kubernetes.io/cluster/fati-Rancher` and `Value = owned`.
   
 * Install `kubectl` on Jenkins Server. [Install and Set up kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl)
 
@@ -3456,7 +3456,7 @@ chmod +x /usr/local/bin/kubectl
 kubectl version --short --client
 ```  
   
-* Log into `frank-Rancher-Cluster-Instance` from Jenkins Server (Bastion host) and install Docker using the following script.
+* Log into `fati-Rancher-Cluster-Instance` from Jenkins Server (Bastion host) and install Docker using the following script.
 
 ```bash
 # Set hostname of instance
@@ -3491,7 +3491,7 @@ sudo usermod -aG docker ubuntu
 newgrp docker
 ```
 
-* Create a target groups with name of `frank-rancher-http-80-tg` with following setup and add the `rancher instances` to it.
+* Create a target groups with name of `fati-rancher-http-80-tg` with following setup and add the `rancher instances` to it.
 
 ```bash
 Target type         : instance
@@ -3509,7 +3509,7 @@ Interval            : 10 seoconds
 Success             : 200
 ```
 
-* Create Application Load Balancer with name of `frank-rancher-alb` using `frank-rke-alb-sg` security group with following settings and add `frank-rancher-http-80-tg` target group to it.
+* Create Application Load Balancer with name of `fati-rancher-alb` using `fati-rke-alb-sg` security group with following settings and add `fati-rancher-http-80-tg` target group to it.
 
 ```text
 Scheme              : internet-facing
@@ -3519,12 +3519,12 @@ IP address type     : ipv4
 Protocol            : HTTPS/HTTP
 Port                : 443/80
 Availability Zones  : Select AZs of RKE instances
-Target group        : `frank-rancher-http-80-tg` target group 
+Target group        : `fati-rancher-http-80-tg` target group 
 ```
 
 * Configure ALB Listener of HTTP on `Port 80` to redirect traffic to HTTPS on `Port 443`.
 
-* Create DNS A record for `rancher.frankyildiz.com` and attach the `frank-rancher-alb` application load balancer to it.
+* Create DNS A record for `rancher.fatiyildiz.com` and attach the `fati-rancher-alb` application load balancer to it.
 
 * Install RKE, the Rancher Kubernetes Engine, [Kubernetes distribution and command-line tool](https://rancher.com/docs/rke/latest/en/installation/)) on Jenkins Server.
 
@@ -3555,7 +3555,7 @@ services:
     creation: 6h
     retention: 24h
 
-ssh_key_path: ~/.ssh/frank-rancher.pem
+ssh_key_path: ~/.ssh/fati-rancher.pem
 
 # Required for external TLS termination with
 # ingress-nginx v0.22+
@@ -3626,7 +3626,7 @@ kubectl create namespace cattle-system
 ```bash
 helm install rancher rancher-latest/rancher \
   --namespace cattle-system \
-  --set hostname=rancher.frankyildiz.com \
+  --set hostname=rancher.fatiyildiz.com \
   --set tls=external \
   --set replicas=1
 ```
@@ -3640,9 +3640,9 @@ kubectl -n cattle-system get pods
 
 ## MSP 25 - Create Staging and Production Environment with Rancher
 
-* To provide access of Rancher to the cloud resources, create a `Cloud Credentials` for AWS on Rancher and name it as `frank-AWS-webapp-Account`.
+* To provide access of Rancher to the cloud resources, create a `Cloud Credentials` for AWS on Rancher and name it as `fati-AWS-webapp-Account`.
 
-* Create a `Node Template` on Rancher with following configuration for to be used while launching the EC2 instances and name it as `frank-AWS-RancherOs-Template`.
+* Create a `Node Template` on Rancher with following configuration for to be used while launching the EC2 instances and name it as `fati-AWS-RancherOs-Template`.
 
 ```text
 Region            : us-east-1
@@ -3811,24 +3811,24 @@ git branch feature/msp-27
 git checkout feature/msp-27
 ```
 
-* Create a Kubernetes cluster using Rancher with RKE and new nodes in AWS  and name it as `frank-yildiz-cluster-staging`.
+* Create a Kubernetes cluster using Rancher with RKE and new nodes in AWS  and name it as `fati-yildiz-cluster-staging`.
 
 ```text
 Cluster Type      : Amazon EC2
-Name Prefix       : frank-yildiz-k8s-instance
+Name Prefix       : fati-yildiz-k8s-instance
 Count             : 3
 etcd              : checked
 Control Plane     : checked
 Worker            : checked
 ```
 
-* Create `frank-yildiz-staging-ns` namespace on `frank-yildiz-cluster-staging` with Rancher.
+* Create `fati-yildiz-staging-ns` namespace on `fati-yildiz-cluster-staging` with Rancher.
 
-* Create a Jenkins Job and name it as `create-ecr-docker-registry-for-frank-yildiz-staging` to create Docker Registry for `Staging` manually on AWS ECR.
+* Create a Jenkins Job and name it as `create-ecr-docker-registry-for-fati-yildiz-staging` to create Docker Registry for `Staging` manually on AWS ECR.
 
 ``` bash
 PATH="$PATH:/usr/local/bin"
-APP_REPO_NAME="frank/frank-yildiz-app-staging"
+APP_REPO_NAME="fati/fati-yildiz-app-staging"
 AWS_REGION="us-east-1"
 
 aws ecr create-repository \
@@ -3910,7 +3910,7 @@ rancher --version
 
   * Paste `Access Key (username)` to Username field and `Secret Key (password)` to Password field.
 
-  * Define an id like `rancher-frank-yildiz-credentials`.
+  * Define an id like `rancher-fati-yildiz-credentials`.
 
 
 * On some systems we need to install Helm S3 plugin as Jenkins user to be able to use S3 with pipeline script. 
@@ -3922,26 +3922,26 @@ helm version
 helm plugin install https://github.com/hypnoglow/helm-s3.git
 ``` 
 
-* Create a Staging Pipeline on Jenkins with name of `frank-yildiz-staging` with following script and configure a `cron job` to trigger the pipeline every Sundays at midnight (`59 23 * * 0`) on `release` branch. `frank-yildiz staging pipeline` should be deployed on permanent staging-environment on `frank-yildiz-cluster` Kubernetes cluster under `frank-yildiz-staging-ns` namespace.
+* Create a Staging Pipeline on Jenkins with name of `fati-yildiz-staging` with following script and configure a `cron job` to trigger the pipeline every Sundays at midnight (`59 23 * * 0`) on `release` branch. `fati-yildiz staging pipeline` should be deployed on permanent staging-environment on `fati-yildiz-cluster` Kubernetes cluster under `fati-yildiz-staging-ns` namespace.
 
-* Prepare a Jenkinsfile for `frank-yildiz-staging` pipeline and save it as `jenkinsfile-frank-yildiz-staging` under `jenkins` folder.
+* Prepare a Jenkinsfile for `fati-yildiz-staging` pipeline and save it as `jenkinsfile-fati-yildiz-staging` under `jenkins` folder.
 
 ``` groovy
 pipeline {
     agent any
     environment {
         PATH=sh(script:"echo $PATH:/usr/local/bin", returnStdout:true).trim()
-        APP_NAME="frank-yildiz"
-        APP_REPO_NAME="frank/frank-yildiz-app-staging"
-        AWS_ACCOUNT_ID=sh(script:'export PATH="$PATH:/usr/local/bin" && aws sts get-franker-identity --query Account --output text', returnStdout:true).trim()
+        APP_NAME="fati-yildiz"
+        APP_REPO_NAME="fati/fati-yildiz-app-staging"
+        AWS_ACCOUNT_ID=sh(script:'export PATH="$PATH:/usr/local/bin" && aws sts get-caller-identity --query Account --output text', returnStdout:true).trim()
         AWS_REGION="us-east-1"
         ECR_REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
-        RANCHER_URL="https://rancher.frankyildiz.com"
-        // Get the project-id from Rancher UI (frank-yildiz-cluster-staging namespace, View in API, copy projectId )
-        RANCHER_CONTEXT="frank-yildiz-cluster:project-id" 
+        RANCHER_URL="https://rancher.fatiyildiz.com"
+        // Get the project-id from Rancher UI (fati-yildiz-cluster-staging namespace, View in API, copy projectId )
+        RANCHER_CONTEXT="fati-yildiz-cluster:project-id" 
        //First part of projectID
-        CLUSTERID="frank-yildiz-cluster"
-        RANCHER_CREDS=credentials('rancher-frank-yildiz-credentials')
+        CLUSTERID="fati-yildiz-cluster"
+        RANCHER_CREDS=credentials('rancher-fati-yildiz-credentials')
     }
     stages {
         stage('Package Application') {
@@ -3988,26 +3988,26 @@ pipeline {
                 sh ". ./jenkins/push-staging-docker-images-to-ecr.sh"
             }
         }
-        stage('Deploy App on frank-yildiz Kubernetes Cluster'){
+        stage('Deploy App on fati-yildiz Kubernetes Cluster'){
             steps {
                 echo 'Deploying App on K8s Cluster'
                 sh "rancher login $RANCHER_URL --context $RANCHER_CONTEXT --token $RANCHER_CREDS_USR:$RANCHER_CREDS_PSW"
                 sh "envsubst < k8s/microservices_chart/values-template.yaml > k8s/microservices_chart/values.yaml"
                 sh "sed -i s/HELM_VERSION/${BUILD_NUMBER}/ k8s/microservices_chart/Chart.yaml"
-                sh "rancher kubectl delete secret regcred -n frank-yildiz-staging-ns || true"
+                sh "rancher kubectl delete secret regcred -n fati-yildiz-staging-ns || true"
                 sh """
-                rancher kubectl create secret generic regcred -n frank-yildiz-staging-ns \
+                rancher kubectl create secret generic regcred -n fati-yildiz-staging-ns \
                 --from-file=.dockerconfigjson=$JENKINS_HOME/.docker/config.json \
                 --type=kubernetes.io/dockerconfigjson
                 """
                 sh "rm -f k8s/config"
                 sh "rancher cluster kf $CLUSTERID > k8s/config"
                 sh "chmod 400 k8s/config"
-                sh "helm repo add stable-frank-yildiz s3://frank-yildiz-helm-charts/stable/myapp/"
+                sh "helm repo add stable-fati-yildiz s3://fati-yildiz-helm-charts/stable/myapp/"
                 sh "helm package k8s/microservices_chart"
-                sh "helm s3 push microservices_chart-${BUILD_NUMBER}.tgz stable-frank-yildiz"
+                sh "helm s3 push microservices_chart-${BUILD_NUMBER}.tgz stable-fati-yildiz"
                 sh "helm repo update"
-                sh "AWS_REGION=$AWS_REGION helm upgrade --install frank-yildiz-app-release stable-frank-yildiz/microservices_chart --version ${BUILD_NUMBER} --namespace frank-yildiz-staging-ns --kubeconfig k8s/config"
+                sh "AWS_REGION=$AWS_REGION helm upgrade --install fati-yildiz-app-release stable-fati-yildiz/microservices_chart --version ${BUILD_NUMBER} --namespace fati-yildiz-staging-ns --kubeconfig k8s/config"
             }
         }
     }
@@ -4020,13 +4020,13 @@ pipeline {
 }
 ```
 
-* Create an `A` record of `staging-microservices.frankyildiz.com` in your hosted zone (in our case `frankyildiz.com`) using AWS Route 53 domain registrar and bind it to your `frank-yildiz cluster`.
+* Create an `A` record of `staging-microservices.fatiyildiz.com` in your hosted zone (in our case `fatiyildiz.com`) using AWS Route 53 domain registrar and bind it to your `fati-yildiz cluster`.
 
 * Commit the change, then push the script to the remote repo.
 
 ``` bash
 git add .
-git commit -m 'added jenkinsfile frank-yildiz-staging for release branch'
+git commit -m 'added jenkinsfile fati-yildiz-staging for release branch'
 git push --set-upstream origin feature/msp-27
 git checkout release
 git merge feature/msp-27
@@ -4043,24 +4043,24 @@ git branch feature/msp-28
 git checkout feature/msp-28
 ```
 
-* Create a Kubernetes cluster using Rancher with RKE and new nodes in AWS (on one EC2 instance only) and name it as `frank-yildiz-cluster`.
+* Create a Kubernetes cluster using Rancher with RKE and new nodes in AWS (on one EC2 instance only) and name it as `fati-yildiz-cluster`.
 
 ```text
 Cluster Type      : Amazon EC2
-Name Prefix       : frank-yildiz-k8s-instance
+Name Prefix       : fati-yildiz-k8s-instance
 Count             : 3
 etcd              : checked
 Control Plane     : checked
 Worker            : checked
 ```
 
-* Create `frank-yildiz-prod-ns` namespace on `frank-yildiz-cluster` with Rancher.
+* Create `fati-yildiz-prod-ns` namespace on `fati-yildiz-cluster` with Rancher.
 
-* Create a Jenkins Job and name it as `create-ecr-docker-registry-for-frank-yildiz-prod` to create Docker Registry for `Production` manually on AWS ECR.
+* Create a Jenkins Job and name it as `create-ecr-docker-registry-for-fati-yildiz-prod` to create Docker Registry for `Production` manually on AWS ECR.
 
 ``` bash
 PATH="$PATH:/usr/local/bin"
-APP_REPO_NAME="frank/frank-yildiz-app-prod"
+APP_REPO_NAME="fati/fati-yildiz-app-prod"
 AWS_REGION="us-east-1"
 
 aws ecr create-repository \
@@ -4151,29 +4151,29 @@ metadata:
   name: mysql-server
 spec:
   type: ExternalName
-  externalName: frank-yildiz.cbanmzptkrzf.us-east-1.rds.amazonaws.com # Change this line with the endpoint of your RDS.
+  externalName: fati-yildiz.cbanmzptkrzf.us-east-1.rds.amazonaws.com # Change this line with the endpoint of your RDS.
 ```
 
-* Create a `Production Pipeline` on Jenkins with name of `frank-yildiz-prod` with following script and configure a `github-webhook` to trigger the pipeline every `commit` on `main` branch. `frank-yildiz production pipeline` should be deployed on permanent prod-environment on `frank-yildiz-cluster` Kubernetes cluster under `frank-yildiz-prod-ns` namespace.
+* Create a `Production Pipeline` on Jenkins with name of `fati-yildiz-prod` with following script and configure a `github-webhook` to trigger the pipeline every `commit` on `main` branch. `fati-yildiz production pipeline` should be deployed on permanent prod-environment on `fati-yildiz-cluster` Kubernetes cluster under `fati-yildiz-prod-ns` namespace.
 
-* Prepare a Jenkinsfile for `frank-yildiz-prod` pipeline and save it as `jenkinsfile-frank-yildiz-prod` under `jenkins` folder.
+* Prepare a Jenkinsfile for `fati-yildiz-prod` pipeline and save it as `jenkinsfile-fati-yildiz-prod` under `jenkins` folder.
 
 ``` groovy
 pipeline {
     agent any
     environment {
         PATH=sh(script:"echo $PATH:/usr/local/bin", returnStdout:true).trim()
-        APP_NAME="frank-yildiz"
-        APP_REPO_NAME="frank/frank-yildiz-app-prod"
-        AWS_ACCOUNT_ID=sh(script:'export PATH="$PATH:/usr/local/bin" && aws sts get-franker-identity --query Account --output text', returnStdout:true).trim()
+        APP_NAME="fati-yildiz"
+        APP_REPO_NAME="fati/fati-yildiz-app-prod"
+        AWS_ACCOUNT_ID=sh(script:'export PATH="$PATH:/usr/local/bin" && aws sts get-caller-identity --query Account --output text', returnStdout:true).trim()
         AWS_REGION="us-east-1"
         ECR_REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
-        RANCHER_URL="https://rancher.frankyildiz.com"
-        // Get the project-id from Rancher UI (frank-yildiz-cluster-staging namespace, View in API, copy projectId )
-        RANCHER_CONTEXT="frank-yildiz-cluster:project-id" 
+        RANCHER_URL="https://rancher.fatiyildiz.com"
+        // Get the project-id from Rancher UI (fati-yildiz-cluster-staging namespace, View in API, copy projectId )
+        RANCHER_CONTEXT="fati-yildiz-cluster:project-id" 
        //First part of projectID
-        CLUSTERID="frank-yildiz-cluster"
-        RANCHER_CREDS=credentials('rancher-frank-yildiz-credentials')
+        CLUSTERID="fati-yildiz-cluster"
+        RANCHER_CREDS=credentials('rancher-fati-yildiz-credentials')
     }
     stages {
         stage('Package Application') {
@@ -4220,26 +4220,26 @@ pipeline {
                 sh ". ./jenkins/push-prod-docker-images-to-ecr.sh"
             }
         }
-        stage('Deploy App on frank-yildiz Kubernetes Cluster'){
+        stage('Deploy App on fati-yildiz Kubernetes Cluster'){
             steps {
                 echo 'Deploying App on K8s Cluster'
                 sh "rancher login $RANCHER_URL --context $RANCHER_CONTEXT --token $RANCHER_CREDS_USR:$RANCHER_CREDS_PSW"
                 sh "envsubst < k8s/microservices_chart/values-template.yaml > k8s/microservices_chart/values.yaml"
                 sh "sed -i s/HELM_VERSION/${BUILD_NUMBER}/ k8s/microservices_chart/Chart.yaml"
-                sh "rancher kubectl delete secret regcred -n frank-yildiz-prod-ns || true"
+                sh "rancher kubectl delete secret regcred -n fati-yildiz-prod-ns || true"
                 sh """
-                rancher kubectl create secret generic regcred -n frank-yildiz-prod-ns \
+                rancher kubectl create secret generic regcred -n fati-yildiz-prod-ns \
                 --from-file=.dockerconfigjson=$JENKINS_HOME/.docker/config.json \
                 --type=kubernetes.io/dockerconfigjson
                 """
                 sh "rm -f k8s/config"
                 sh "rancher cluster kf $CLUSTERID > k8s/config"
                 sh "chmod 400 k8s/config"
-                sh "helm repo add stable-frank-yildiz s3://frank-yildiz-helm-charts/stable/myapp/"
+                sh "helm repo add stable-fati-yildiz s3://fati-yildiz-helm-charts/stable/myapp/"
                 sh "helm package k8s/microservices_chart"
-                sh "helm s3 push --force microservices_chart-${BUILD_NUMBER}.tgz stable-frank-yildiz"
+                sh "helm s3 push --force microservices_chart-${BUILD_NUMBER}.tgz stable-fati-yildiz"
                 sh "helm repo update"
-                sh "AWS_REGION=$AWS_REGION helm upgrade --install frank-yildiz-app-release stable-frank-yildiz/microservices_chart --version ${BUILD_NUMBER} --namespace frank-yildiz-prod-ns --kubeconfig k8s/config"
+                sh "AWS_REGION=$AWS_REGION helm upgrade --install fati-yildiz-app-release stable-fati-yildiz/microservices_chart --version ${BUILD_NUMBER} --namespace fati-yildiz-prod-ns --kubeconfig k8s/config"
             }
         }
     }
@@ -4256,7 +4256,7 @@ pipeline {
 
 ``` bash
 git add .
-git commit -m 'added jenkinsfile frank-yildiz-production for main branch'
+git commit -m 'added jenkinsfile fati-yildiz-production for main branch'
 git push --set-upstream origin feature/msp-28
 git checkout release
 git merge feature/msp-28
@@ -4281,23 +4281,23 @@ git branch feature/msp-29
 git checkout feature/msp-29
 ```
 
-* Create an `A` record of `microservices.frankyildiz.com` in your hosted zone (in our case `frankyildiz.com`) using AWS Route 53 domain registrar and bind it to your `frank-yildiz cluster`.
+* Create an `A` record of `microservices.fatiyildiz.com` in your hosted zone (in our case `fatiyildiz.com`) using AWS Route 53 domain registrar and bind it to your `fati-yildiz cluster`.
 
-* Configure TLS(SSL) certificate for `microservices.frankyildiz.com` using `cert-manager` on frank-yildiz K8s cluster with the following steps.
+* Configure TLS(SSL) certificate for `microservices.fatiyildiz.com` using `cert-manager` on fati-yildiz K8s cluster with the following steps.
 
-* Log into Jenkins Server and configure the `kubectl` to connect to frank-yildiz cluster by getting the `Kubeconfig` file from Rancher and save it as `$HOME/.kube/config` or set `KUBECONFIG` environment variable.
+* Log into Jenkins Server and configure the `kubectl` to connect to fati-yildiz cluster by getting the `Kubeconfig` file from Rancher and save it as `$HOME/.kube/config` or set `KUBECONFIG` environment variable.
 
 ```bash
-#create frank-yildiz-config file under home folder(/home/ec2-user/.kube).
-nano frank-yildiz-config
+#create fati-yildiz-config file under home folder(/home/ec2-user/.kube).
+nano fati-yildiz-config
 # paste the content of kubeconfig file and save it.
-chmod 400 frank-yildiz-config
-export KUBECONFIG=/home/ec2-user/.kube/frank-yildiz-config
-# test the kubectl with frank-yildiz namespaces
+chmod 400 fati-yildiz-config
+export KUBECONFIG=/home/ec2-user/.kube/fati-yildiz-config
+# test the kubectl with fati-yildiz namespaces
 kubectl get ns
 ```
 
-* Install the `cert-manager` on frank-yildiz cluster. See [Cert-Manager info](https://cert-manager.io/docs/).
+* Install the `cert-manager` on fati-yildiz cluster. See [Cert-Manager info](https://cert-manager.io/docs/).
 
   * Create the namespace for cert-manager
 
@@ -4351,7 +4351,7 @@ spec:
     # The ACME server URL
     server: https://acme-v02.api.letsencrypt.org/directory
     # Email address used for ACME registration
-    email: captain.frank.89@gmail.com
+    email: fthyldz8935@gmail.com
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
       name: letsencrypt-prod
@@ -4379,24 +4379,24 @@ metadata:
 spec:
   tls:
   - hosts:
-    - microservices.frankyildiz.com
-    secretName: frank-yildiz-tls
+    - microservices.fatiyildiz.com
+    secretName: fati-yildiz-tls
 ```
 
-* Check and verify that the TLS(SSL) certificate created and successfully issued to `microservices.frankyildiz.com` by checking URL of `https://microservices.frankyildiz.com`
+* Check and verify that the TLS(SSL) certificate created and successfully issued to `microservices.fatiyildiz.com` by checking URL of `https://microservices.fatiyildiz.com`
 
 * Commit the change, then push the tls script to the remote repo.
 
 ``` bash
 git add .
-git commit -m 'added tls scripts for frank-yildiz-production'
+git commit -m 'added tls scripts for fati-yildiz-production'
 git push --set-upstream origin feature/msp-29
 git checkout main
 git merge feature/msp-29
 git push origin main
 ```
 
-* Run the `Production Pipeline` `frank-yildiz-prod` on Jenkins manually to examine the frank-yildiz application.
+* Run the `Production Pipeline` `fati-yildiz-prod` on Jenkins manually to examine the fati-yildiz application.
 
 
 ## MSP 30 - Monitoring with Prometheus and Grafana
