@@ -1,7 +1,7 @@
 PATH="$PATH:/usr/local/bin"
 APP_NAME="microservices"
-APP_REPO_NAME="frankyildiz-repo/microservices-app-qa"
-ANS_KEYPAIR="frank-${APP_NAME}-qa.key"
+APP_REPO_NAME="fatiyildiz-repo/microservices-app-qa"
+ANS_KEYPAIR="fati-${APP_NAME}-qa.key"
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 export AWS_REGION="us-east-1"
 ECR_REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"

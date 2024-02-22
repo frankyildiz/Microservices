@@ -3,11 +3,11 @@ pipeline {
     environment {
         PATH=sh(script:"echo $PATH:/usr/local/bin", returnStdout:true).trim()
         APP_NAME="microservices"
-        APP_REPO_NAME="frankyildiz-repo/microservices-app-prod"
+        APP_REPO_NAME="fatiyildiz-repo/microservices-app-prod"
         AWS_ACCOUNT_ID=sh(script:'export PATH="$PATH:/usr/local/bin" && aws sts get-caller-identity --query Account --output text', returnStdout:true).trim()
         AWS_REGION="us-east-1"
         ECR_REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
-        RANCHER_URL="https://rancher.frankyildiz.com"
+        RANCHER_URL="https://rancher.fatiyildiz.com"
         // Get the project-id from Rancher UI (microservices-cluster-staging namespace, View in API, copy projectId )
         RANCHER_CONTEXT="c-m-9fncxzmt:p-6m2j2" 
        //First part of projectID
@@ -74,7 +74,7 @@ pipeline {
                 sh "rm -f k8s/config"
                 sh "rancher cluster kf $CLUSTERID > k8s/config"
                 sh "chmod 400 k8s/config"
-                sh "helm repo add stable-microservices s3://microservices-helm-charts-fatihyildiz/stable/myapp/"
+                sh "helm repo add stable-microservices s3://microservices-helm-charts-fatiyildiz/stable/myapp/"
                 sh "helm package k8s/microservices_chart"
                 sh "helm s3 push --force microservices_chart-${BUILD_NUMBER}.tgz stable-microservices"
                 sh "helm repo update"

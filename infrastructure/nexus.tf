@@ -19,7 +19,7 @@ provider "aws" {
 resource "aws_instance" "tf-nexus-server" {
   ami           = "ami-09538990a0c4fe9be"
   instance_type = "t3a.medium"
-  key_name      = "call-rancher.pem"
+  key_name      = "fati-rancher.pem"
   vpc_security_group_ids = [aws_security_group.tf-nexus-sec-gr.id]
   tags = {
     Name = "nexus-server"
@@ -47,7 +47,7 @@ resource "null_resource" "forpasswd" {
 
   # Do not forget to define your key file path correctly!
   provisioner "local-exec" {
-    command = "ssh -i ~/.ssh/call-rancher.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ec2-user@${aws_instance.tf-nexus-server.public_ip} 'docker cp nexus:/nexus-data/admin.password  admin.password && cat /home/ec2-user/admin.password' > initialpasswd.txt"
+    command = "ssh -i ~/.ssh/fati-rancher.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ec2-user@${aws_instance.tf-nexus-server.public_ip} 'docker cp nexus:/nexus-data/admin.password  admin.password && cat /home/ec2-user/admin.password' > initialpasswd.txt"
   }
 }
 

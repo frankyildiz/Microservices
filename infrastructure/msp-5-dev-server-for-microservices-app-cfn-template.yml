@@ -10,7 +10,7 @@ Microservices:
       #! /bin/bash
       yum update -y 
       hostnamectl set-hostname microservices-dev-server
-      amazon-linux-extras install docker -y
+      yum install docker -y
       systemctl start docker
       systemctl enable docker
       usermod -a -G docker ec2-user
@@ -19,7 +19,7 @@ Microservices:
       chmod +x /usr/local/bin/docker-compose
       yum install git -y
       yum install java-11-amazon-corretto -y
-      git clone https://github.com/fatiyildiz/microservices.git
+      git clone https://github.com/fatiyildiz/MICROSERVICES-CI-CD-PIPELINE.git
       cd ci-cd-pipeline-microservices
       git fetch
       git checkout dev
